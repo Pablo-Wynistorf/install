@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Script Installer</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-[#1E1E2D] text-white font-sans flex justify-center items-start min-h-screen pt-10">
+  <div class="bg-[#2A2A3A] rounded-lg shadow-lg p-8 w-full max-w-4xl">
+    <h1 class="text-4xl font-bold text-center mb-6">Available Installation Scripts</h1>
+
+    <!-- Scripts Box -->
+    <div>
+      <h2 class="text-2xl font-semibold mb-4">Script List</h2>
+      <p class="mb-4">Click the copy button next to each script to copy the install command:</p>
+      
+      <!-- The script list will be populated here -->
+      <div id="scriptList" class="space-y-4"></div>
+    </div>
+  </div>
+
+  <script>
+    const origin = window.location.origin;
+    const scriptDir = `${origin}/s/`;
+
+    // Function to fetch script files from GitHub Pages directory
+    async function fetchScriptList() {
+      const response = await fetch(scriptDir);
+      const text = await response.text();
+
+      // Parse the directory listing from GitHub Pages HTML response
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(text, 'text/html');
+      const scripts = [...doc.querySelectorAll('a')]
+        .map(link => link.href.split('/').pop())
+        .filter(name => name.endsWith('.sh')); // Only keep .sh scripts
+
+      return scripts;
+    }
+
+    // Function to populate the script list dynamically
+    async function populateScriptList() {
+      const scripts = await fetchScriptList();
+      const scriptListContainer = document.getElementById('scriptList');
+      scriptListContainer.innerHTML = ''; // Clear existing content
+
+      scripts.forEach(script => {
+        const command = `curl -fsSL ${scriptDir}${script} | bash`;
+
+        const scriptContainer = document.createElement('div');
+        scriptContainer.className = "flex items-center justify-between p-4 bg-[#2A2A3A] border border-gray-600 rounded-lg";
+
+        const scriptName = document.createElement('span');
+        scriptName.textContent = script;
+        scriptName.className = "font-mono text-lg";
+
+        const copyButton = document.createElement('button');
+        copyButton.className = "copy-button bg-transparent text-gray-400 p-1 ml-1 hover:text-gray-300 transition duration-200";
+        copyButton.title = "Copy Install Command";
+        
+        // Initial SVG
+        const copySVG = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M7 7m0 2.667a2.667 2.667 0 0 1 2.667 -2.667h8.666a2.667 2.667 0 0 1 2.667 2.667v8.666a2.667 2.667 0 0 1 -2.667 2.667h-8.666a2.667 2.667 0 0 1 -2.667 -2.667z" /><path d="M4.012 16.737a2.005 2.005 0 0 1 -1.012 -1.737v-10c0 -1.1 .9 -2 2 -2h10c.75 0 1.158 .385 1.5 1" /></svg>`;
+        
+        // Success SVG
+        const checkSVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" class="icon"><path fill-rule="evenodd" d="M19.916 4.626a.75.75 0 0 1 .208 1.04l-9 13.5a.75.75 0 0 1-1.154.114l-6-6a.75.75 0 0 1 1.06-1.06l5.353 5.353 8.493-12.74a.75.75 0 0 1 1.04-.207Z" clip-rule="evenodd"></path></svg>`;        
+        copyButton.innerHTML = copySVG;
+
+        copyButton.onclick = () => {
+          navigator.clipboard.writeText(command);
+          copyButton.innerHTML = checkSVG; // Change to check SVG
+          
+          // Change back to copy SVG after 3 seconds
+          setTimeout(() => {
+            copyButton.innerHTML = copySVG;
+          }, 3000);
+        };
+
+        const commandBox = document.createElement('div');
+        commandBox.className = "bg-[#2A2A3A] border border-pink-600 p-4 rounded-lg mt-2 flex items-center justify-between";
+        commandBox.innerHTML = `<span class="font-mono text-sm">${command} </span>`;
+        commandBox.appendChild(copyButton);
+
+        scriptContainer.appendChild(scriptName);
+        scriptContainer.appendChild(commandBox);
+        scriptListContainer.appendChild(scriptContainer);
+      });
+    }
+
+    // Fetch and display scripts on page load
+    populateScriptList();
+  </script>
+</body>
+</html>
