@@ -47,7 +47,7 @@
         scriptListContainer.innerHTML = '';
 
         scripts.forEach(script => {
-          const command = `curl -fsSL ${origin}/s/${script} | bash`;
+          const command = `sudo curl -fsSL ${origin}/s/${script} | bash`;
 
           const scriptContainer = document.createElement('div');
           scriptContainer.className = "flex items-center justify-between p-4 bg-[#2A2A3A] border border-gray-600 rounded-lg";

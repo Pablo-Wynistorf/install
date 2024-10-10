@@ -1,4 +1,4 @@
-#/bin/bash
+#!/bin/bash
 if ! [ -x "$(command -v unzip)" ]; then
   echo 'Info: unzip is not installed.' >&2
   echo 'Trying to install unzip...'
