@@ -10,9 +10,10 @@ if ! [ -x "$(command -v unzip)" ]; then
   fi
 fi
 
-curl "https://github.com/aws/aws-sam-cli/releases/latest/download/aws-sam-cli-linux-x86_64.zip" -o "aws-sam-cli-linux-x86_64"
-unzip aws-sam-cli-linux-x86_64.zip
-sudo ./aws-sam-cli-linux-x86_64/install
-rm -rf aws-sam-cli-linux-x86_64.zip aws-sam-cli-linux-x86_64
+curl -L "https://github.com/aws/aws-sam-cli/releases/latest/download/aws-sam-cli-linux-x86_64.zip" -o "sam-cli.zip"
+mkdir -p sam-cli
+unzip sam-cli.zip -d sam-cli
+sudo ./sam-cli/install --update
+rm -rf sam-cli.zip sam-cli
 
 sam --version
