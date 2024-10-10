@@ -1,4 +1,5 @@
 #!/bin/bash
+
 rm -rf /usr/local/go
 curl -LO https://get.golang.org/$(uname)/go_installer
 chmod +x go_installer
