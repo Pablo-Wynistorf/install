@@ -9,12 +9,12 @@
 </head>
 <body class="bg-[#1E1E2D] text-white font-sans flex justify-center items-start min-h-screen pt-10">
   <div class="bg-[#2A2A3A] rounded-lg shadow-lg p-8 w-full max-w-4xl">
-    <h1 class="text-4xl font-bold text-center mb-6">Available Installation Scripts</h1>
+    <h1 class="text-4xl font-bold text-center mb-6">Installation Scripts</h1>
 
     <input type="text" id="searchInput" placeholder="Search scripts..." class="mb-4 p-7 rounded-lg w-full border border-gray-600 bg-[#2A2A3A] text-gray-300 focus:outline-none focus:border-pink-500" onkeyup="filterScripts()">
 
     <div>
-      <h2 class="text-2xl font-semibold mb-4">Scripts List</h2>
+      <h2 class="text-2xl font-semibold mb-4">Script List</h2>
 
       <div id="scriptList" class="space-y-4"></div>
     </div>
@@ -85,7 +85,7 @@
         };
 
         const commandBox = document.createElement('div');
-        commandBox.className = "bg-[#2A2A3A] border border-pink-600 p-4 rounded-lg mt-2 flex items-center justify-between";
+        commandBox.className = "overflow-x-auto ml-3 whitespace-nowrap bg-[#2A2A3A] border border-pink-600 p-4 rounded-lg mt-2 flex items-center justify-between"; // Converted style to Tailwind classes
         commandBox.innerHTML = `<span class="font-mono text-sm">${command} </span>`;
         commandBox.appendChild(copyButton);
 
