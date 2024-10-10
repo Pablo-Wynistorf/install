@@ -12,4 +12,4 @@ fi
 install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
 rm kubectl kubectl.sha256
 
-kubectl version --client
+echo "Kubectl $(kubectl version --client --short) installed successfully"

@@ -16,4 +16,4 @@ unzip sam-cli.zip -d sam-cli
 ./sam-cli/install --update
 rm -rf sam-cli.zip sam-cli
 
-sam --version
+echo "AWS SAM CLI $(sam --version) installed successfully"

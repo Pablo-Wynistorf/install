@@ -15,4 +15,4 @@ unzip awscliv2.zip
 ./aws/install
 rm -rf awscliv2.zip aws
 
-aws --version
+echo "AWS CLI $(aws --version) installed successfully"

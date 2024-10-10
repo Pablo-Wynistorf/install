@@ -5,4 +5,4 @@ echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://
 apt update
 apt install terraform
 
-terraform --version
+echo "Terraform $(terraform --version) installed successfully"

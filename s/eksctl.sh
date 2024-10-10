@@ -23,7 +23,9 @@ if [ $? -ne 0 ]; then
   exit 1
 fi
 
+rm eksctl_checksums.txt
+
 tar -xzf eksctl_$PLATFORM.tar.gz -C /tmp && rm eksctl_$PLATFORM.tar.gz
 sudo mv /tmp/eksctl /usr/local/bin
 
-echo "eksctl version $(eksctl version) installed successfully"
+echo "Eksctl version $(eksctl version) installed successfully"
