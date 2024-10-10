@@ -22,12 +22,11 @@
 
   <script>
     const origin = window.location.origin;
-    const scriptDir = 's'; // Directory within the repo that contains scripts
+    const scriptDir = 's';
     const repoOwner = 'Pablo-Wynistorf';
     const repoName = 'install';
     const githubAPIUrl = `https://api.github.com/repos/${repoOwner}/${repoName}/contents/${scriptDir}`;
 
-    // Function to fetch script files from GitHub API
     async function fetchScriptList() {
       const response = await fetch(githubAPIUrl);
       if (!response.ok) {
@@ -35,20 +34,20 @@
       }
       const data = await response.json();
       
-      // Filter out .sh files and extract the filenames
       const scripts = data
         .filter(file => file.name.endsWith('.sh'))
-        .map(file => file.name); // Get only the filename
+        .map(file => file.name);
 
       return scripts;
     }
 
-    // Function to populate the script list dynamically
     async function populateScriptList() {
       try {
         const scripts = await fetchScriptList();
         const scriptListContainer = document.getElementById('scriptList');
-        scriptListContainer.innerHTML = ''; // Clear existing content
+        scriptListContainer.innerHTML = '';
+
+        const scriptNoExtention = scripts.map(script => script.replace('.sh', ''));
 
         scripts.forEach(script => {
           const command = `curl -fsSL ${origin}/s/${script} | bash`;
@@ -57,25 +56,22 @@
           scriptContainer.className = "flex items-center justify-between p-4 bg-[#2A2A3A] border border-gray-600 rounded-lg";
 
           const scriptName = document.createElement('span');
-          scriptName.textContent = script;
+          scriptName.textContent = scriptNoExtention;
           scriptName.className = "font-mono text-lg";
 
           const copyButton = document.createElement('button');
           copyButton.className = "copy-button bg-transparent text-gray-400 p-1 ml-1 hover:text-gray-300 transition duration-200";
           copyButton.title = "Copy Install Command";
 
-          // Initial SVG
-          const copySVG = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M7 7m0 2.667a2.667 2.667 0 0 1 2.667 -2.667h8.666a2.667 2.667 0 0 1 2.667 2.667v8.666a2.667 2.667 0 0 1 -2.667 2.667h-8.666a2.667 2.667 0 0 1 -2.667 -2.667z" /><path d="M4.012 16.737a2.005 2.005 0 0 1 -1.012 -1.737v-10c0 -1.1 .9 -2 2 -2h10c.75 0 1.158 .385 1.5 1" /></svg>`;
-          
-          // Success SVG
-          const checkSVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" class="icon"><path fill-rule="evenodd" d="M19.916 4.626a.75.75 0 0 1 .208 1.04l-9 13.5a.75.75 0 0 1-1.154.114l-6-6a.75.75 0 0 1 1.06-1.06l5.353 5.353 8.493-12.74a.75.75 0 0 1 1.04-.207Z" clip-rule="evenodd"></path></svg>`;        
+          const copySVG = `<svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M7 7m0 2.667a2.667 2.667 0 0 1 2.667 -2.667h8.666a2.667 2.667 0 0 1 2.667 2.667v8.666a2.667 2.667 0 0 1 -2.667 2.667h-8.666a2.667 2.667 0 0 1 -2.667 -2.667z" /><path d="M4.012 16.737a2.005 2.005 0 0 1 -1.012 -1.737v-10c0 -1.1 .9 -2 2 -2h10c.75 0 1.158 .385 1.5 1" /></svg>`;
+
+          const checkSVG = `<svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" class="check text-green"><path fill-rule="evenodd" d="M19.916 4.626a.75.75 0 0 1 .208 1.04l-9 13.5a.75.75 0 0 1-1.154.114l-6-6a.75.75 0 0 1 1.06-1.06l5.353 5.353 8.493-12.74a.75.75 0 0 1 1.04-.207Z" clip-rule="evenodd" fill="green"></path></svg>`;        
           copyButton.innerHTML = copySVG;
 
           copyButton.onclick = () => {
             navigator.clipboard.writeText(command);
-            copyButton.innerHTML = checkSVG; // Change to check SVG
+            copyButton.innerHTML = checkSVG;
             
-            // Change back to copy SVG after 3 seconds
             setTimeout(() => {
               copyButton.innerHTML = copySVG;
             }, 3000);
@@ -94,8 +90,6 @@
         console.error('Error fetching script list:', error);
       }
     }
-
-    // Fetch and display scripts on page load
     populateScriptList();
   </script>
 </body>
