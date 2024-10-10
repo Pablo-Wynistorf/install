@@ -27,7 +27,7 @@
     const repoName = 'install';
     const githubAPIUrl = `https://api.github.com/repos/${repoOwner}/${repoName}/contents/${scriptDir}`;
 
-    let allScripts = []; // To store all scripts
+    let allScripts = [];
 
     async function fetchScriptList() {
       const response = await fetch(githubAPIUrl);
@@ -47,6 +47,7 @@
       try {
         allScripts = await fetchScriptList();
         renderScriptList(allScripts);
+        document.getElementById('searchInput').focus();
       } catch (error) {
         console.error('Error fetching script list:', error);
       }
@@ -98,7 +99,7 @@
     function filterScripts() {
       const searchInput = document.getElementById('searchInput').value.toLowerCase();
       const filteredScripts = allScripts.filter(script => script.toLowerCase().includes(searchInput));
-      renderScriptList(filteredScripts); // Render the filtered list
+      renderScriptList(filteredScripts);
     }
 
     populateScriptList();
